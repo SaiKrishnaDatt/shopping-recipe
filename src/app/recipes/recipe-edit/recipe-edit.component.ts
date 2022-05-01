@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, PatternValidator, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Subject } from 'rxjs';
+import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.services';
 
 @Component({
@@ -66,7 +68,17 @@ onAddIngredients(){
     });
   }
   onSubmit(){
-    console.log(this.recipeForm);
+  //  const newRecipe = new Recipe(
+  //    this.recipeForm.value['name'],
+  //    this.recipeForm.value['description'],
+  //    this.recipeForm.value['imagePath'],
+  //    this.recipeForm.value['ingredients']
+  //  );
+   if(this.editMode){
+     this.recipeService.updateRecipe(this.id,this.recipeForm.value)
+   } else {
+     this.recipeService.addRecipe(this.recipeForm.value)
+   }
   }
   get controls() { // a getter!
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
